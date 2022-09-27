@@ -1,0 +1,3 @@
+= strava-data-analysis
+
+Project to learn how to analys data using Python.
