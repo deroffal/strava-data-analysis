@@ -1,3 +1,15 @@
 = strava-data-analysis
 
 Project to learn how to analyse data using Python.
+
+== Data
+
+link:data/README.adoc[Data section] : Results from Strava API (stored in file to avoid to exceed rate limit)
+
+== Analysis
+
+link:analysis/README.adoc[Analysis Section] : Python analysis and data visualization
+
+== Export
+
+link:export/README.adoc[Export Section] : Export Strava data from the API
