@@ -1,1 +1,6 @@
 = Export
+
+https://github.com/swagger-api/swagger-js/blob/master/docs/usage/installation.md
+https://github.com/swagger-api/swagger-js/blob/master/docs/usage/http-client-for-oas-operations.md
+
+https://developers.strava.com/swagger/swagger.json
