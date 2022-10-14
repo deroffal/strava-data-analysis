@@ -23,7 +23,7 @@ class SwaggerApi {
 
     //FIXME handle pagination
     async getLoggedInAthleteActivities(start_date) {
-        let time = new Date(start_date).getTime() / 1_000;
+        let time = start_date.getTime() / 1_000;
         let loggedInAthleteActivities = this.activitiesAPI.getLoggedInAthleteActivities({
             after: time,
             per_page: 100
@@ -34,6 +34,17 @@ class SwaggerApi {
                 console.error
             );
     }
+
+    async getActivityById(id){
+        let activityById = this.activitiesAPI.getActivityById({id: id});
+        return activityById
+            .then(
+                response => JSON.parse(response.data),
+                console.error
+            );
+    }
+
+
 }
 
 async function createStravaApiClient(token) {

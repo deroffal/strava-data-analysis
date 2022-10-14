@@ -1,19 +1,38 @@
-const {createStravaApiClient} = require("./adapters/strava-adapter");
-
-let start_date = '2022-01-01';
+const {createStravaApiClient} = require("./adapters/strava-api-adapter");
+const {
+    getLastRecordedActivityDate,
+    addNewActivitiesToAthleteActivities,
+    addNewActivity
+} = require("./adapters/strava-repository-adapter");
 
 (async () => {
-    console.log("start...")
-    let token = getToken();
-    let client = await createStravaApiClient(token);
-    let athleteActivities = await client.getLoggedInAthleteActivities(start_date)
+    console.info("start...")
+    let startDate = await getLastRecordedActivityDate();
 
-    console.log(`athleteActivities : ${athleteActivities.length}`)
+    let client = await getStravaApiClient();
+    let newActivities = await client.getLoggedInAthleteActivities(startDate)
+    if (newActivities.length > 0) {
 
-    console.log("end...")
+        await addNewActivitiesToAthleteActivities(newActivities)
 
+        let activityPromises = newActivities.map(activity => activity.id)
+            .map(id =>
+                client.getActivityById(id)
+                    .then(activity => addNewActivity(activity))
+            )
 
+        await Promise.all(activityPromises)
+    } else {
+        console.info("No new activity.")
+
+    }
+    console.info("end...")
 })()
+
+async function getStravaApiClient() {
+    let token = getToken();
+    return createStravaApiClient(token);
+}
 
 function getToken() {
     let token = process.env['STRAVA_TOKEN'];
