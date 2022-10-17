@@ -1,0 +1,4 @@
+= Notebooks
+
+* link:01-activities.ipynb[Activities] : Overview of my activities in 2022
+* link:02-running_analysis.ipynb[Running Activities analysis] : Analysis of running activities (segments, ...)

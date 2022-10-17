@@ -1,0 +1,3 @@
+= stravadataanalysis
+
+Python module used by notebooks.
