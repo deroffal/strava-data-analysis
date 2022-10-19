@@ -6,6 +6,7 @@ def extract_segments(segments: dict):
     {
         "id": $segment['segment']['id'],
         "elapsedTime": $segment['elapsed_time'],
+        "name": $segment['name']
     }
     """
     datas = []
