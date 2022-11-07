@@ -1,3 +1,19 @@
+import itertools
+
+import pandas as pd
+
+
+def get_top_10_segments(activities):
+    activities_segments = activities['segment_efforts'].apply(extract_segments)
+    segments_2022 = pd.DataFrame(itertools.chain.from_iterable(activities_segments.values))
+
+    top_10_segments = segments_2022.groupby(['id']) \
+        .agg(count=('id', 'count'), name=('name', 'min'))[['count', 'name']] \
+        .reset_index().sort_values(by=('count'), ascending=False) \
+        .head(10)
+    return top_10_segments
+
+
 def extract_segments(segments: dict):
     """
     Extract segment's data

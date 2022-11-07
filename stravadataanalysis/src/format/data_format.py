@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from stravadataanalysis.src import data_conversion
+from stravadataanalysis.src.data import data_conversion
 
 
 def seconds_as_hhmmss(time: int) -> str:
@@ -16,7 +16,8 @@ def seconds_as_hhmmss(time: int) -> str:
     minutes, seconds = divmod(remainder, 60)
     total_hours = str(days * 24 + hours).zfill(2)
     total_minutes = str(minutes).zfill(2)
-    return f"{total_hours}:{total_minutes}:{seconds}"
+    total_seconds = str(seconds).zfill(2)
+    return f"{total_hours}:{total_minutes}:{total_seconds}"
 
 
 def m_as_km(meters: int) -> str:
@@ -34,7 +35,7 @@ def mps_as_kmh(speed: float) -> str:
     :param speed: speed in meter per seconde
     :return: speed in kilometer per hour
     """
-    return f"{round(data_conversion.mps_to_kmh(speed), 2)}km"
+    return f"{round(data_conversion.mps_to_kmh(speed), 2)}km/h"
 
 
 def mps_as_minpkm(speed: float) -> str:
