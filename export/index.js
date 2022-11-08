@@ -24,7 +24,6 @@ const {
         await Promise.all(activityPromises)
     } else {
         console.info("No new activity.")
-
     }
     console.info("end...")
 })()

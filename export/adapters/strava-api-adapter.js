@@ -1,5 +1,6 @@
 const SwaggerClient = require('swagger-client');
 
+
 class SwaggerApi {
     constructor(token) {
         this.token = token
@@ -7,6 +8,11 @@ class SwaggerApi {
 
     async _doInitialize() {
         const requestInterceptor = (request) => {
+            let proxy = process.env['HTTP_PROXY'];
+            if(proxy){
+                const HttpsProxyAgent = require('https-proxy-agent')
+                request.agent = new HttpsProxyAgent(proxy)
+            }
             request.headers["Authorization"] = `Bearer ${this.token}`
             return request;
         };
