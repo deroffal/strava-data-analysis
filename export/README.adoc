@@ -16,3 +16,5 @@ Documentation : https://developers.strava.com/docs/authentication/
 ----
 STRAVA_TOKEN=${STRAVA_TOKEN} npm start
 ----
+
+NOTE: It is possible to provide an additional `HTTP_PROXY` value to handle proxy in http call.
