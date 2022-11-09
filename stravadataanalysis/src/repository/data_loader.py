@@ -2,7 +2,7 @@ from datetime import datetime
 
 import pandas as pd
 
-from stravadataanalysis.src.data import file_utils
+from stravadataanalysis.src.repository import file_utils
 
 
 def load_athlete_activities(file: str, year: int):

@@ -1,6 +1,6 @@
 import unittest
 
-from stravadataanalysis.src.format.data_format import seconds_as_hhmmss, m_as_km, mps_as_kmh, mps_as_minpkm, bpm, m
+from stravadataanalysis.src.view.data_format import seconds_as_hhmmss, m_as_km, mps_as_kmh, mps_as_minpkm, bpm, m
 
 
 class DataFormat(unittest.TestCase):
