@@ -20,7 +20,7 @@ def extract_split_metrics(activities):
 
     metrics = itertools.chain.from_iterable(metrics_list)
 
-    df = pd.DataFrame(metrics)[['split', 'average_speed', 'average_heartrate']]
+    df = pd.DataFrame(metrics)[['split', 'average_speed', 'average_heartrate', 'activity_id']]
 
     means = df[['split', 'average_speed', 'average_heartrate']] \
         .groupby('split').mean() \
