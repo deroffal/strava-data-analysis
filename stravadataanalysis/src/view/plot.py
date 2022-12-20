@@ -6,7 +6,7 @@ from stravadataanalysis.src.domain import data_conversion
 
 def plot_distance_distribution(distance_distribution: pandas.DataFrame, show_empty: bool = False):
     if show_empty:
-        distance_distribution.plot(x='distance', y='count', kind="bar")
+        distance_distribution.reindex().plot(x='distance', y='count', kind="bar")
     else:
         distance_distribution[distance_distribution['count'] != 0].plot(x='distance', y='count', kind="bar")
 

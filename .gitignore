@@ -1,5 +1,6 @@
 .idea
-.ipynb_checkpoints
 .tmp
+*/.ipynb_checkpoints
+/env
 
 */node_modules

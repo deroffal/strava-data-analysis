@@ -1,0 +1,16 @@
+= Installation
+
+[source,shell]
+----
+#create and start env
+python -m venv env
+.\env\Scripts\activate
+
+# in (env)
+
+pip install -e .
+deactivate
+
+#start notebook
+jupyter notebook --notebook-dir .
+----
