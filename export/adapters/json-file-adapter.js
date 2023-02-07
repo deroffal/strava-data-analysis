@@ -1,7 +1,7 @@
 const fsPromise = require("fs/promises")
 const fs = require("fs")
 
-const resourcesDirectory = '../data/2022'
+const resourcesDirectory = '../data'
 
 async function readFile(path) {
     return fsPromise.readFile(`${resourcesDirectory}/${path}`)

@@ -5,7 +5,7 @@ async function getLastRecordedActivityDate() {
     if (currentAthleteActivities.length !== 0) {
         return new Date(currentAthleteActivities[currentAthleteActivities.length - 1]['start_date'])
     } else {
-        return new Date(new Date().getFullYear(), 0, 1)
+        return new Date(2010, 0, 1)
     }
 
 }
