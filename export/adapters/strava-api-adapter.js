@@ -1,4 +1,5 @@
 const SwaggerClient = require('swagger-client');
+const { getToken } = require('../env');
 
 
 class SwaggerApi {
@@ -53,7 +54,8 @@ class SwaggerApi {
 
 }
 
-async function createStravaApiClient(token) {
+async function createStravaApiClient() {
+    let token = getToken();
     let client = new SwaggerApi(token)
     await client._doInitialize()
     return client

@@ -2,39 +2,37 @@ const { createStravaApiClient } = require("./adapters/strava-api-adapter");
 const repository = require("./adapters/strava-repository-adapter");
 
 (async () => {
-  console.info(new Date() + " start...")
-  let startDate = await repository.getLastRecordedActivityDate();
+  console.info("start...")
+  let stravaClient = await createStravaApiClient()
 
-  let client = await getStravaApiClient();
-  let newActivities = await client.getLoggedInAthleteActivities(startDate)
-  if (newActivities.length > 0) {
+  await repository.getLastRecordedActivityDate()
+  .then(startDate => stravaClient.getLoggedInAthleteActivities(startDate))
+  .then(saveNewActivities)
 
-    // FIXME synchronous to avoid "too many request" error to de-synchronize athlete_activities.json and activites/*
-    for (const newActivity of newActivities) {
-      await repository.addNewAthleteActivities(newActivity)
-      .then(activity => client.getActivityById(activity.id), activity => {
-        repository.removeAthleteActivities(activity.id);
-      })
-      .then(repository.addNewActivity)
+  function saveNewActivities(newAthleteActivities) {
+    if (newAthleteActivities.length > 0) {
+      console.log(`${newAthleteActivities.length} activitiy(ies)`)
+      let promises = newAthleteActivities.map(fetchActivityData)
+      return Promise.all(promises)
+    } else {
+      console.info("No new activity.")
+      return Promise.resolve();
     }
-
-  } else {
-    console.info(new Date() + " No new activity.")
   }
-  console.info(new Date() + " end...")
+
+  function fetchActivityData(newAthleteActivity) {
+    console.log(`Fetching activity ${newAthleteActivity.id}`)
+    return repository.addNewAthleteActivities(newAthleteActivity)
+    .then(athleteActivity => stravaClient.getActivityById(athleteActivity.id))
+    .then(activity => repository.addNewActivity(activity))
+    .catch(err => {
+      console.error("Error : " + err)
+      repository.removeAthleteActivities(newAthleteActivity.id)
+    })
+
+  }
+
+  console.info("end...")
+  process.exit(0)
 })()
-
-async function getStravaApiClient() {
-  let token = getToken();
-  return createStravaApiClient(token);
-}
-
-function getToken() {
-  let token = process.env['STRAVA_TOKEN'];
-  if (!token) {
-    throw new Error("Please provide a value for env STRAVA_TOKEN !")
-  }
-  return token;
-}
-
 
