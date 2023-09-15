@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="index.js - local" type="NodeJSConfigurationType" path-to-js-file="index.js" working-dir="$PROJECT_DIR$/export">
+    <envs>
+      <env name="STRAVA_ACCESS_TOKEN" value="" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>
