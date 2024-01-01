@@ -1,6 +1,9 @@
 .idea
 .tmp
+
 */.ipynb_checkpoints
 /env
 
-*/node_modules
+node_modules/
+
+application-prod.yaml

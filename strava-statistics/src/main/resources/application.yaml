@@ -1,0 +1,18 @@
+strava-statistics:
+  client:
+    api:
+      url: https://www.strava.com/api/v3/
+      clientId:
+      clientSecret:
+      refreshToken:
+      # (optional) direct authentication with access token :
+      accessToken:
+    settings:
+      activityPerPage: 99
+  mongo:
+    url:
+    database:
+
+logging:
+  level:
+    reactor.netty.http.client: INFO

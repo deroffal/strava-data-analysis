@@ -34,7 +34,7 @@ npm run start
 
 NOTE: It is possible to provide an additional `HTTP_PROXY` value to handle proxy in http call.
 
-Runner for IntelliJ are available in link:.run/[.run directory].
+Runner for IntelliJ are available in link:export/.run/[.run directory].
 
 == schema-generation
 
