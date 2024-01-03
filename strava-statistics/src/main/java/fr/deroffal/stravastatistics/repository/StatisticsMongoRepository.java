@@ -1,5 +1,6 @@
 package fr.deroffal.stravastatistics.repository;
 
+import fr.deroffal.stravastatistics.app.ActivityWithSummary;
 import fr.deroffal.stravastatistics.app.StatisticsRepository;
 import fr.deroffal.stravastatistics.client.model.DetailedActivity;
 import fr.deroffal.stravastatistics.client.model.SummaryActivity;
@@ -30,12 +31,17 @@ public class StatisticsMongoRepository implements StatisticsRepository {
   }
 
   @Override
-  public SummaryActivity saveSummary(SummaryActivity summaryActivity) {
+  public ActivityWithSummary saveActivityWithSummary(ActivityWithSummary activityWithSummary) {
+    var summaryActivity = saveSummary(activityWithSummary.summaryActivity());
+    var detailedActivity = saveActivity(activityWithSummary.detailedActivity());
+    return new ActivityWithSummary(summaryActivity, detailedActivity);
+  }
+
+  private SummaryActivity saveSummary(SummaryActivity summaryActivity) {
     return mongoMapper.from(summaryRepository.save(mongoMapper.from(summaryActivity)));
   }
 
-  @Override
-  public DetailedActivity saveActivity(DetailedActivity detailedActivity) {
+  private DetailedActivity saveActivity(DetailedActivity detailedActivity) {
     return mongoMapper.from(activityRepository.save(mongoMapper.from(detailedActivity)));
   }
 }

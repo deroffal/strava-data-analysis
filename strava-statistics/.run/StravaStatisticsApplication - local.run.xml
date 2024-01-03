@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="StravaStatisticsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-    <option name="ACTIVE_PROFILES" value="prod,apiTokenProvider" />
+  <configuration default="false" name="StravaStatisticsApplication - local" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <option name="ACTIVE_PROFILES" value="local,apiTokenProvider" />
     <module name="strava-statistics" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="fr.deroffal.stravastatistics.StravaStatisticsApplication" />
     <extension name="coverage">

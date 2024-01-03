@@ -55,7 +55,8 @@ public class DataImportRunner implements ApplicationRunner {
 
     ActivityClient activityClient = client.getActivityClient();
 
-    Collection<SummaryActivity> summaryActivitiesSince = activityClient.getSummaryActivitiesSince(lastRecordedActivityDate);
+    Collection<SummaryActivity> summaryActivitiesSince = activityClient.getSummaryActivitiesSince(
+        lastRecordedActivityDate);
 
     LOGGER.debug("{} activities are fetched", summaryActivitiesSince.size());
 
@@ -63,8 +64,8 @@ public class DataImportRunner implements ApplicationRunner {
         .map(summaryActivity -> {
           LOGGER.info("Processing activity {}", summaryActivity.getId());
           DetailedActivity detailedActivity = activityClient.getDetailedActivity(summaryActivity.getId());
-          return new ActivityWithSummary(statisticsRepository.saveSummary(summaryActivity),
-              statisticsRepository.saveActivity(detailedActivity));
+          return statisticsRepository.saveActivityWithSummary(
+              new ActivityWithSummary(summaryActivity, detailedActivity));
         })
         .toList();
 
