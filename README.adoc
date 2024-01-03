@@ -1,6 +1,8 @@
 = strava-data-analysis
 
-Project to learn how to analyse data using Python.
+image:.docs/images/api_logo_pwrdBy_strava_horiz_white.png[]
+
+Project to learn how to analyse data.
 
 == Data
 
