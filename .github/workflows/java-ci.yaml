@@ -4,6 +4,7 @@ on:
       - 'main'
     paths:
       - 'strava-statistics'
+  workflow_dispatch:
 
 jobs:
   maven-build:
