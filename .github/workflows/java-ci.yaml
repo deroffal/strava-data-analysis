@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'strava-statistics'
+
+jobs:
+  maven-build:
+    concurrency:
+      group: ${{ github.head_ref || github.run_id }}
+      cancel-in-progress: true
+    uses: deroffal/github-actions/.github/workflows/ci-maven.yml@main
+    with:
+      working-directory: ./strava-statistics
