@@ -2,18 +2,16 @@ package fr.deroffal.stravastatistics.repository;
 
 import static fr.deroffal.stravastatistics.repository.CustomConverters.dateZonedDateTimeConverter;
 import static fr.deroffal.stravastatistics.repository.CustomConverters.zonedDateTimeDateConverter;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
+import com.mongodb.connection.ConnectionPoolSettings;
 import jakarta.validation.constraints.NotBlank;
-import java.util.Collection;
-import java.util.Collections;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
-import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions.MongoConverterConfigurationAdapter;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.validation.annotation.Validated;
 
@@ -35,21 +33,17 @@ public class MongoConfiguration extends AbstractMongoClientConfiguration {
   }
 
   @Override
-  public MongoClient mongoClient() {
+  protected MongoClientSettings mongoClientSettings() {
     ConnectionString connectionString = new ConnectionString(getUrl());
-    MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
+    return MongoClientSettings.builder()
         .applyConnectionString(connectionString)
+        .applyToConnectionPoolSettings((ConnectionPoolSettings.Builder builder) -> builder.maxWaitTime(5, SECONDS))
+        .applyToSocketSettings(builder -> builder.connectTimeout(5, SECONDS))
         .build();
-
-    return MongoClients.create(mongoClientSettings);
   }
 
   @Override
-  public Collection getMappingBasePackages() {
-    return Collections.singleton(this.getClass().getPackage().getName());
-  }
-
-  protected void configureConverters(MongoCustomConversions.MongoConverterConfigurationAdapter converterConfigurationAdapter) {
+  protected void configureConverters(MongoConverterConfigurationAdapter converterConfigurationAdapter) {
     converterConfigurationAdapter
         .registerConverter(dateZonedDateTimeConverter())
         .registerConverter(zonedDateTimeDateConverter());
@@ -71,5 +65,6 @@ public class MongoConfiguration extends AbstractMongoClientConfiguration {
     this.url = url;
   }
 
-
 }
+
+
