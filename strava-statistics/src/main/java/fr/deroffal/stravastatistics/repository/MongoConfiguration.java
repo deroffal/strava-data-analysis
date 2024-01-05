@@ -8,7 +8,6 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ServerApi;
-import com.mongodb.ServerApiVersion;
 import com.mongodb.connection.ConnectionPoolSettings;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;

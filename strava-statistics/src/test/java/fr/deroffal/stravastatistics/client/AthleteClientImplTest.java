@@ -7,10 +7,10 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.mockserver.model.MediaType.APPLICATION_JSON;
 
-import fr.deroffal.stravastatistics.client.model.ActivityStats;
-import fr.deroffal.stravastatistics.client.model.DetailedAthlete;
-import fr.deroffal.stravastatistics.client.model.SummaryGear;
-import fr.deroffal.stravastatistics.client.model.Zones;
+import fr.deroffal.stravastatistics.model.ActivityStats;
+import fr.deroffal.stravastatistics.model.DetailedAthlete;
+import fr.deroffal.stravastatistics.model.SummaryGear;
+import fr.deroffal.stravastatistics.model.Zones;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

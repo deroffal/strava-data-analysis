@@ -1,6 +1,6 @@
 package fr.deroffal.stravastatistics.repository;
 
-import fr.deroffal.stravastatistics.client.model.DetailedActivity;
+import fr.deroffal.stravastatistics.model.DetailedActivity;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

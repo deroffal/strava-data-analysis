@@ -1,9 +1,9 @@
 package fr.deroffal.stravastatistics.client;
 
 import fr.deroffal.stravastatistics.app.StravaClient.AthleteClient;
-import fr.deroffal.stravastatistics.client.model.ActivityStats;
-import fr.deroffal.stravastatistics.client.model.DetailedAthlete;
-import fr.deroffal.stravastatistics.client.model.Zones;
+import fr.deroffal.stravastatistics.model.ActivityStats;
+import fr.deroffal.stravastatistics.model.DetailedAthlete;
+import fr.deroffal.stravastatistics.model.Zones;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

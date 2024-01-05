@@ -2,8 +2,8 @@ package fr.deroffal.stravastatistics.repository;
 
 import fr.deroffal.stravastatistics.app.ActivityWithSummary;
 import fr.deroffal.stravastatistics.app.StatisticsRepository;
-import fr.deroffal.stravastatistics.client.model.DetailedActivity;
-import fr.deroffal.stravastatistics.client.model.SummaryActivity;
+import fr.deroffal.stravastatistics.model.DetailedActivity;
+import fr.deroffal.stravastatistics.model.SummaryActivity;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Optional;

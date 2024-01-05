@@ -7,9 +7,9 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.mockserver.model.MediaType.APPLICATION_JSON;
 
-import fr.deroffal.stravastatistics.client.model.DetailedActivity;
-import fr.deroffal.stravastatistics.client.model.DetailedSegmentEffort;
-import fr.deroffal.stravastatistics.client.model.SummaryActivity;
+import fr.deroffal.stravastatistics.model.DetailedActivity;
+import fr.deroffal.stravastatistics.model.DetailedSegmentEffort;
+import fr.deroffal.stravastatistics.model.SummaryActivity;
 import java.time.Instant;
 import java.util.Collection;
 import org.junit.jupiter.api.DisplayName;

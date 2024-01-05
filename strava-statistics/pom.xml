@@ -23,6 +23,7 @@
 
     <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     <mockserver.version>5.15.0</mockserver.version>
+    <archunit.version>1.2.1</archunit.version>
   </properties>
 
   <dependencies>
@@ -73,6 +74,13 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>com.tngtech.archunit</groupId>
+      <artifactId>archunit-junit5</artifactId>
+      <version>${archunit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -90,7 +98,7 @@
               <inputSpec>https://developers.strava.com/swagger/swagger.json</inputSpec>
 
               <generatorName>spring</generatorName>
-              <modelPackage>fr.deroffal.stravastatistics.client.model</modelPackage>
+              <modelPackage>fr.deroffal.stravastatistics.model</modelPackage>
 
               <generateApis>false</generateApis>
               <skipValidateSpec>true</skipValidateSpec>

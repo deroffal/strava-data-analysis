@@ -2,11 +2,11 @@ package fr.deroffal.stravastatistics.app;
 
 import fr.deroffal.stravastatistics.app.StravaClient.ActivityClient;
 import fr.deroffal.stravastatistics.app.StravaClient.AthleteClient;
-import fr.deroffal.stravastatistics.client.model.ActivityStats;
-import fr.deroffal.stravastatistics.client.model.DetailedActivity;
-import fr.deroffal.stravastatistics.client.model.DetailedAthlete;
-import fr.deroffal.stravastatistics.client.model.SummaryActivity;
-import fr.deroffal.stravastatistics.client.model.Zones;
+import fr.deroffal.stravastatistics.model.ActivityStats;
+import fr.deroffal.stravastatistics.model.DetailedActivity;
+import fr.deroffal.stravastatistics.model.DetailedAthlete;
+import fr.deroffal.stravastatistics.model.SummaryActivity;
+import fr.deroffal.stravastatistics.model.Zones;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;

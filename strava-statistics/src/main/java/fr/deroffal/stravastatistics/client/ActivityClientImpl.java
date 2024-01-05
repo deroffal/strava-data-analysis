@@ -2,8 +2,8 @@ package fr.deroffal.stravastatistics.client;
 
 
 import fr.deroffal.stravastatistics.app.StravaClient.ActivityClient;
-import fr.deroffal.stravastatistics.client.model.DetailedActivity;
-import fr.deroffal.stravastatistics.client.model.SummaryActivity;
+import fr.deroffal.stravastatistics.model.DetailedActivity;
+import fr.deroffal.stravastatistics.model.SummaryActivity;
 import java.time.Instant;
 import java.util.Collection;
 import org.slf4j.Logger;
