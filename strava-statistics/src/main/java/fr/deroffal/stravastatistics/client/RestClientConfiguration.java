@@ -3,6 +3,7 @@ package fr.deroffal.stravastatistics.client;
 import static com.fasterxml.jackson.databind.DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.deroffal.stravastatistics.client.rate.RateLoggerInterceptor;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

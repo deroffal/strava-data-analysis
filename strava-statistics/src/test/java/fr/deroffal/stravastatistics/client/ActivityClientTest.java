@@ -56,7 +56,7 @@ class ActivityClientTest {
         );
 
     Collection<SummaryActivity> activities = activityClient.getSummaryActivitiesSince(
-        Instant.parse("2022-02-13T00:00:00Z"));
+        Instant.parse("2022-02-13T00:00:00Z")).activities();
 
     assertThat(activities.stream().map(SummaryActivity::getId))
         .containsExactlyInAnyOrder(6465654440L, 6497819499L, 6516576106L, 6553064943L, 6570536821L, 6580524741L,
@@ -85,7 +85,7 @@ class ActivityClientTest {
         );
 
     Collection<SummaryActivity> activities = activityClient.getSummaryActivitiesSince(
-        Instant.parse("2022-02-13T00:00:00Z"));
+        Instant.parse("2022-02-13T00:00:00Z")).activities();
 
     assertThat(activities).isEmpty();
   }

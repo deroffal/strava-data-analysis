@@ -93,12 +93,24 @@ public class StravaApiConfiguration {
     @Max(99)
     private int activityPerPage;
 
+    @Min(1)
+    @Max(99)
+    private int callsPerActivity;
+
     public int getActivityPerPage() {
       return activityPerPage;
     }
 
     public void setActivityPerPage(int activityPerPage) {
       this.activityPerPage = activityPerPage;
+    }
+
+    public int getCallsPerActivity() {
+      return callsPerActivity;
+    }
+
+    public void setCallsPerActivity(int callsPerActivity) {
+      this.callsPerActivity = callsPerActivity;
     }
   }
 }

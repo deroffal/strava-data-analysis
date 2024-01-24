@@ -1,5 +1,7 @@
 package fr.deroffal.stravastatistics.client;
 
+import static java.lang.Math.min;
+
 import fr.deroffal.stravastatistics.app.ActivityWithSummary;
 import fr.deroffal.stravastatistics.app.StravaClient;
 import fr.deroffal.stravastatistics.model.DetailedActivity;
@@ -22,9 +24,15 @@ class StravaClientImpl implements StravaClient {
 
   @Override
   public List<ActivityWithSummary> getActivityWithSummarySince(Instant lastRecordedActivityDate) {
-    var summaryActivitiesSince = activityClient.getSummaryActivitiesSince(lastRecordedActivityDate);
+    var fetchActivitiesResponse = activityClient.getSummaryActivitiesSince(lastRecordedActivityDate);
+    var summaryActivitiesSince = fetchActivitiesResponse.activities();
+
 
     LOGGER.debug("{} activities are fetched", summaryActivitiesSince.size());
+
+    int remainingCalls = min(fetchActivitiesResponse.quarterHourRate().getRemainingCalls(), fetchActivitiesResponse.dailyRate().getRemainingCalls());
+
+    LOGGER.info("remainingCalls allow : {}", remainingCalls);
 
     return summaryActivitiesSince.stream()
         .map(summaryActivity -> {

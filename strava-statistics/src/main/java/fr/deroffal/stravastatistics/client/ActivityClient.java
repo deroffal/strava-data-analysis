@@ -1,6 +1,7 @@
 package fr.deroffal.stravastatistics.client;
 
 
+import fr.deroffal.stravastatistics.client.rate.RateAdapter;
 import fr.deroffal.stravastatistics.model.DetailedActivity;
 import fr.deroffal.stravastatistics.model.SummaryActivity;
 import java.time.Instant;
@@ -24,15 +25,18 @@ class ActivityClient {
     this.stravaApiConfiguration = stravaApiConfiguration;
   }
 
-  public Collection<SummaryActivity> getSummaryActivitiesSince(final Instant instant) {
-    return restClient.get()
+  public FetchActivitiesResponse getSummaryActivitiesSince(final Instant instant) {
+    var entity = restClient.get()
         .uri(builder -> builder.path("athlete/activities")
             .queryParam("per_page", stravaApiConfiguration.getSettings().getActivityPerPage())
             .queryParam("after", instant.getEpochSecond())
             .build()
         )
         .retrieve()
-        .body(new ParameterizedTypeReference<>() {});
+        .toEntity(new ParameterizedTypeReference<Collection<SummaryActivity>>() {});
+
+    var rateAdapter = new RateAdapter(entity.getHeaders());
+    return new FetchActivitiesResponse(entity.getBody(), rateAdapter.getQuarterHourRate(), rateAdapter.getDailyRate());
   }
 
   public DetailedActivity getDetailedActivity(Long activityId) {
@@ -41,5 +45,6 @@ class ActivityClient {
         .uri(builder -> builder.path("activities/" + activityId).build())
         .retrieve().body(DetailedActivity.class);
   }
+
 
 }

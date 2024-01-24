@@ -13,7 +13,7 @@ public class ArchitectureTest {
   private static final String BASE_PACKAGE = ArchitectureTest.class.getPackage().getName();
   private static final String APP_PACKAGE = BASE_PACKAGE + ".app";
   private static final String GENERATED_MODEL_PACKAGE = BASE_PACKAGE + ".model";
-  private static final String CLIENT_PACKAGE = BASE_PACKAGE + ".client";
+  private static final String CLIENT_PACKAGES = BASE_PACKAGE + ".client..";
   private static final String PERSISTENCE_PACKAGE = BASE_PACKAGE + ".repository";
 
   @ArchTest
@@ -33,11 +33,11 @@ public class ArchitectureTest {
 
   @ArchTest
   public void checkDependenciesOnClientModule(JavaClasses classes) {
-    noClasses().that().resideInAPackage(CLIENT_PACKAGE)
-        .should().onlyBeAccessed().byClassesThat().resideOutsideOfPackage(CLIENT_PACKAGE)
+    noClasses().that().resideInAPackage(CLIENT_PACKAGES)
+        .should().onlyBeAccessed().byClassesThat().resideOutsideOfPackage(CLIENT_PACKAGES)
         .check(classes);
 
-    noClasses().that().resideOutsideOfPackage(CLIENT_PACKAGE)
+    noClasses().that().resideOutsideOfPackage(CLIENT_PACKAGES)
         .should().accessClassesThat().resideInAnyPackage("org.springframework.http", "org.springframework.web")
         .check(classes);
   }
