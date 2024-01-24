@@ -1,14 +1,11 @@
 package fr.deroffal.stravastatistics.client.auth;
 
 import static fr.deroffal.stravastatistics.Utils.getFileContent;
-import static fr.deroffal.stravastatistics.client.AccessTokenProvider.PROFILE_API_TOKEN_PROVIDER;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.mockserver.model.MediaType.APPLICATION_JSON;
 
-import fr.deroffal.stravastatistics.client.ClientTestConfiguration;
 import fr.deroffal.stravastatistics.client.StravaApiConfiguration;
 import fr.deroffal.stravastatistics.client.StravaApiConfiguration.ApiConfig;
 import java.net.MalformedURLException;
@@ -19,15 +16,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.model.Header;
 import org.mockserver.springtest.MockServerTest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @MockServerTest("strava-statistics.client.api.url=http://localhost:${mockServerPort}")

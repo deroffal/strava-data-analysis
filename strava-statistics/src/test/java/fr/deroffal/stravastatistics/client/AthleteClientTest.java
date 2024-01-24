@@ -11,8 +11,6 @@ import fr.deroffal.stravastatistics.model.ActivityStats;
 import fr.deroffal.stravastatistics.model.DetailedAthlete;
 import fr.deroffal.stravastatistics.model.SummaryGear;
 import fr.deroffal.stravastatistics.model.Zones;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.model.Header;
@@ -25,10 +23,10 @@ import org.springframework.test.context.ActiveProfiles;
 @MockServerTest("strava-statistics.client.api.url=http://localhost:${mockServerPort}")
 @ActiveProfiles({"client", PROFILE_MOCK_TOKEN_PROVIDER})
 @SpringBootTest(classes = ClientTestConfiguration.class)
-class AthleteClientImplTest {
+class AthleteClientTest {
 
   @Autowired
-  private AthleteClientImpl athleteClient;
+  private AthleteClient athleteClient;
 
   @Value("${strava-statistics.client.api.url}")
   private String mockServerUrl;

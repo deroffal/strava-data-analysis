@@ -1,15 +1,8 @@
 package fr.deroffal.stravastatistics.app;
 
-import fr.deroffal.stravastatistics.app.StravaClient.ActivityClient;
-import fr.deroffal.stravastatistics.app.StravaClient.AthleteClient;
-import fr.deroffal.stravastatistics.model.ActivityStats;
-import fr.deroffal.stravastatistics.model.DetailedActivity;
-import fr.deroffal.stravastatistics.model.DetailedAthlete;
-import fr.deroffal.stravastatistics.model.SummaryActivity;
-import fr.deroffal.stravastatistics.model.Zones;
+import static java.util.Comparator.comparing;
+
 import java.time.Instant;
-import java.util.Collection;
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -37,48 +30,23 @@ public class DataImportRunner implements ApplicationRunner {
     System.exit(0);
   }
 
-  // just to print on activiy :
-//  private void process() {
-//    DetailedActivity detailedActivity = client.getDetailedActivity(4120884444L);
-//    System.out.println(detailedActivity);
-//  }
-
-  private void process() {
-
-    //optional : print athlete statistics
-//    printAthleteStatistics();
-
+  public void process() {
     Instant lastRecordedActivityDate = statisticsRepository.getLastRecordedActivityDate()
         .orElse(DEFAULT_START_DATE);
 
     LOGGER.info("Last recorded activity date is {}", lastRecordedActivityDate);
 
-    ActivityClient activityClient = client.getActivityClient();
+    var activities = client.getActivityWithSummarySince(lastRecordedActivityDate);
 
-    Collection<SummaryActivity> summaryActivitiesSince = activityClient.getSummaryActivitiesSince(
-        lastRecordedActivityDate);
+    activities.forEach(statisticsRepository::saveActivityWithSummary);
 
-    LOGGER.debug("{} activities are fetched", summaryActivitiesSince.size());
+    LOGGER.info("Done with {} activities.", activities.size());
 
-    List<ActivityWithSummary> list = summaryActivitiesSince.stream()
-        .map(summaryActivity -> {
-          LOGGER.info("Processing activity {}", summaryActivity.getId());
-          DetailedActivity detailedActivity = activityClient.getDetailedActivity(summaryActivity.getId());
-          return statisticsRepository.saveActivityWithSummary(
-              new ActivityWithSummary(summaryActivity, detailedActivity));
-        })
-        .toList();
+    activities.stream()
+        .max(comparing(act -> act.summaryActivity().getStartDate()))
+        .ifPresent(last -> LOGGER.info("Last recorded activity date is now {}", last.summaryActivity().getStartDate()));
 
-    LOGGER.info("Done with {} activities.", list.size());
-  }
 
-  private void printAthleteStatistics() {
-    AthleteClient athleteClient = client.getAthleteClient();
-    DetailedAthlete detailedAthlete = athleteClient.getDetailedAthlete();
-    Zones zones = athleteClient.getZones();
-    ActivityStats athleteStats = athleteClient.getAthleteStats(detailedAthlete.getId());
-    AthleteSummary athleteSummary = new AthleteSummary(detailedAthlete, zones, athleteStats);
-    System.out.println(athleteSummary);
   }
 
 }

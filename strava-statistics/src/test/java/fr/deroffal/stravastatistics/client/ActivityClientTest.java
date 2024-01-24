@@ -25,10 +25,10 @@ import org.springframework.test.context.ActiveProfiles;
 @MockServerTest("strava-statistics.client.api.url=http://localhost:${mockServerPort}")
 @ActiveProfiles({"client", PROFILE_MOCK_TOKEN_PROVIDER})
 @SpringBootTest(classes = ClientTestConfiguration.class)
-class ActivityClientImplTest {
+class ActivityClientTest {
 
   @Autowired
-  private ActivityClientImpl activityClient;
+  private ActivityClient activityClient;
 
   @Value("${strava-statistics.client.api.url}")
   private String mockServerUrl;

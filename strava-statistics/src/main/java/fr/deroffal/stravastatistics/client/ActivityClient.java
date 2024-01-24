@@ -1,7 +1,6 @@
 package fr.deroffal.stravastatistics.client;
 
 
-import fr.deroffal.stravastatistics.app.StravaClient.ActivityClient;
 import fr.deroffal.stravastatistics.model.DetailedActivity;
 import fr.deroffal.stravastatistics.model.SummaryActivity;
 import java.time.Instant;
@@ -13,19 +12,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
 @Service
-class ActivityClientImpl implements ActivityClient {
+class ActivityClient {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ActivityClientImpl.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ActivityClient.class);
 
   private final RestClient restClient;
   private final StravaApiConfiguration stravaApiConfiguration;
 
-  public ActivityClientImpl(RestClient restClient, StravaApiConfiguration stravaApiConfiguration) {
+  public ActivityClient(RestClient restClient, StravaApiConfiguration stravaApiConfiguration) {
     this.restClient = restClient;
     this.stravaApiConfiguration = stravaApiConfiguration;
   }
 
-  @Override
   public Collection<SummaryActivity> getSummaryActivitiesSince(final Instant instant) {
     return restClient.get()
         .uri(builder -> builder.path("athlete/activities")
@@ -37,7 +35,6 @@ class ActivityClientImpl implements ActivityClient {
         .body(new ParameterizedTypeReference<>() {});
   }
 
-  @Override
   public DetailedActivity getDetailedActivity(Long activityId) {
     LOGGER.debug("getDetailedActivity - {}", activityId);
     return restClient.get()
