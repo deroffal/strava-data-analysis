@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas
 
-from stravadataanalysis.src.domain import data_conversion
+from . import data_conversion
 
 
 def plot_distance_distribution(distance_distribution: pandas.DataFrame, show_empty: bool = False):

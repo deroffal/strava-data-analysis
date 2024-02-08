@@ -1,7 +1,6 @@
 import unittest
 
-from stravadataanalysis.src.domain.data_conversion import m_to_km, mps_to_kmh, mps_to_minpkm, seconds_to_hh_mm_ss
-
+from analysis.src.view.data_conversion import m_to_km, mps_to_kmh, mps_to_minpkm, seconds_to_hh_mm_ss
 
 class DataConversion(unittest.TestCase):
 

@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from stravadataanalysis.src.domain import data_conversion
+from . import data_conversion
 
 
 def seconds_as_hhmmss(time: int) -> str:

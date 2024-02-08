@@ -2,7 +2,7 @@
 .tmp
 
 */.ipynb_checkpoints
-/env
+analysis/strava-data-analysis-env/
 
 node_modules/
 
