@@ -5,7 +5,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "activity")
+@Document(collection = "strava_activity")
 public class ActivityDocument extends DetailedActivity {
 
   @Id
