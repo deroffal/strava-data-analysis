@@ -26,7 +26,7 @@ public class StatisticsMongoRepository implements StatisticsRepository {
   @Override
   public Optional<Instant> getLastRecordedActivityDate() {
     return summaryRepository.findTopByOrderByStartDateDesc()
-        .map(SummaryDocument::getStartDate)
+        .map(SummaryActivityDocument::getStartDate)
         .map(OffsetDateTime::toInstant);
   }
 

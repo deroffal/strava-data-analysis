@@ -9,9 +9,9 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = SPRING)
 public interface MongoMapper {
 
-  ActivityDocument from(DetailedActivity detailedActivity);
-  DetailedActivity from(ActivityDocument activity);
+  DetailedActivityDocument from(DetailedActivity detailedActivity);
+  DetailedActivity from(DetailedActivityDocument activity);
 
-  SummaryDocument from(SummaryActivity summaryActivity);
-  SummaryActivity from(SummaryDocument athleteActivity);
+  SummaryActivityDocument from(SummaryActivity summaryActivity);
+  SummaryActivity from(SummaryActivityDocument athleteActivity);
 }

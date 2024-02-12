@@ -12,6 +12,8 @@ import com.mongodb.connection.ConnectionPoolSettings;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mapping.model.FieldNamingStrategy;
+import org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions.MongoConverterConfigurationAdapter;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
@@ -48,6 +50,11 @@ public class MongoConfiguration extends AbstractMongoClientConfiguration {
         .applyToConnectionPoolSettings((ConnectionPoolSettings.Builder builder) -> builder.maxWaitTime(5, SECONDS))
         .applyToSocketSettings(builder -> builder.connectTimeout(5, SECONDS))
         .build();
+  }
+
+  @Override
+  protected FieldNamingStrategy fieldNamingStrategy() {
+    return new SnakeCaseFieldNamingStrategy();
   }
 
   @Override
