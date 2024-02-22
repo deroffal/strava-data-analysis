@@ -3,17 +3,23 @@ package fr.deroffal.stravastatistics.client;
 import static com.fasterxml.jackson.databind.DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.deroffal.stravastatistics.client.body.WrapResponseBodyInterceptor;
 import fr.deroffal.stravastatistics.client.rate.RateLoggerInterceptor;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestClient;
 
 @Configuration
 public class RestClientConfiguration {
+
+  private static final List<ClientHttpRequestInterceptor> CUSTOM_INTERCEPTION_CHAIN = List.of(
+      new WrapResponseBodyInterceptor(), new RateLoggerInterceptor()
+  );
 
   private final AccessTokenProvider accessTokenProvider;
   private final StravaApiConfiguration stravaApiConfiguration;
@@ -33,7 +39,7 @@ public class RestClientConfiguration {
         .baseUrl(baseUrl)
         .defaultHeader("Authorization", "Bearer " + accessTokenProvider.getAccessToken())
         .defaultHeader("Accept", "application/json")
-        .requestInterceptor(new RateLoggerInterceptor())
+        .requestInterceptors(interceptors -> interceptors.addAll(CUSTOM_INTERCEPTION_CHAIN))
         .build();
   }
 

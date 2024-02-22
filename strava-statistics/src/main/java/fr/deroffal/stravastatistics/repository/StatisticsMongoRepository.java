@@ -1,47 +1,73 @@
 package fr.deroffal.stravastatistics.repository;
 
+import static fr.deroffal.stravastatistics.repository.MongoConfiguration.DETAILED_ACTIVITY_COLLECTION;
+import static fr.deroffal.stravastatistics.repository.MongoConfiguration.SUMMARY_ACTIVITY_COLLECTION;
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
 import fr.deroffal.stravastatistics.app.ActivityWithSummary;
 import fr.deroffal.stravastatistics.app.StatisticsRepository;
-import fr.deroffal.stravastatistics.model.DetailedActivity;
-import fr.deroffal.stravastatistics.model.SummaryActivity;
 import java.time.Instant;
-import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.Optional;
+import org.bson.Document;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StatisticsMongoRepository implements StatisticsRepository {
 
-  private final SummaryRepository summaryRepository;
-  private final ActivityRepository activityRepository;
-  private final MongoMapper mongoMapper;
+  private final MongoTemplate mongoTemplate;
 
-  public StatisticsMongoRepository(SummaryRepository summaryRepository, ActivityRepository activityRepository,
-      MongoMapper mongoMapper) {
-    this.summaryRepository = summaryRepository;
-    this.activityRepository = activityRepository;
-    this.mongoMapper = mongoMapper;
+  public StatisticsMongoRepository(MongoTemplate mongoTemplate) {
+    this.mongoTemplate = mongoTemplate;
   }
 
   @Override
   public Optional<Instant> getLastRecordedActivityDate() {
-    return summaryRepository.findTopByOrderByStartDateDesc()
-        .map(SummaryActivityDocument::getStartDate)
-        .map(OffsetDateTime::toInstant);
+    Query query = new Query();
+    query.with(Sort.by(DESC, "start_date")).limit(1);
+    Document lastDocument = mongoTemplate.findOne(query, Document.class, SUMMARY_ACTIVITY_COLLECTION);
+    return Optional.ofNullable(lastDocument)
+//        .map(document -> (String) document.get("start_date"))
+//        .map(Instant::parse);
+        .map(document -> document.getDate("start_date"))
+        .map(Date::toInstant);
   }
 
   @Override
-  public ActivityWithSummary saveActivityWithSummary(ActivityWithSummary activityWithSummary) {
-    var summaryActivity = saveSummary(activityWithSummary.summaryActivity());
-    var detailedActivity = saveActivity(activityWithSummary.detailedActivity());
-    return new ActivityWithSummary(summaryActivity, detailedActivity);
+  public void saveActivityWithSummary(ActivityWithSummary activityWithSummary) {
+    saveSummary(activityWithSummary.summaryActivity().getPayload());
+    saveActivity(activityWithSummary.detailedActivity().getPayload());
   }
 
-  private SummaryActivity saveSummary(SummaryActivity summaryActivity) {
-    return mongoMapper.from(summaryRepository.save(mongoMapper.from(summaryActivity)));
+  private void saveSummary(String summaryActivity) {
+    Document doc = Document.parse(summaryActivity);
+    convertDateFields(doc);
+    mongoTemplate.insert(doc, SUMMARY_ACTIVITY_COLLECTION);
   }
 
-  private DetailedActivity saveActivity(DetailedActivity detailedActivity) {
-    return mongoMapper.from(activityRepository.save(mongoMapper.from(detailedActivity)));
+  private void saveActivity(String detailedActivity) {
+    Document doc = Document.parse(detailedActivity);
+    convertDateFields(doc);
+    mongoTemplate.insert(doc, DETAILED_ACTIVITY_COLLECTION);
+  }
+
+  // allow to store date data as Date in Mongo instead of plain String
+  private static void convertDateFields(Document doc) {
+    doc.keySet().stream()
+        .filter(StatisticsMongoRepository::isDateField)
+        .forEach(dateField -> convertDateField(doc, dateField));
+  }
+
+  private static void convertDateField(Document doc, String dateField) {
+    String statDate = (String) doc.get(dateField);
+    doc.append(dateField, Instant.parse(statDate));
+  }
+
+  private static boolean isDateField(String fieldName) {
+    String name = fieldName.toLowerCase();
+    return name.contains("_date") || name.contains("date_");
   }
 }

@@ -2,16 +2,27 @@ package fr.deroffal.stravastatistics.client;
 
 import static fr.deroffal.stravastatistics.Utils.getFileContent;
 import static fr.deroffal.stravastatistics.client.AccessTokenProvider.PROFILE_MOCK_TOKEN_PROVIDER;
+import static java.util.stream.Collectors.joining;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.mockserver.model.MediaType.APPLICATION_JSON;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.deroffal.stravastatistics.model.CustomDetailedActivity;
+import fr.deroffal.stravastatistics.model.CustomSummaryActivity;
 import fr.deroffal.stravastatistics.model.DetailedActivity;
 import fr.deroffal.stravastatistics.model.DetailedSegmentEffort;
 import fr.deroffal.stravastatistics.model.SummaryActivity;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
@@ -36,6 +47,8 @@ class ActivityClientTest {
 
   @Test
   void getSummaryActivitiesSince() {
+    String responseBody = getFileContent("summaryActivities.json");
+
     client.when(
             request()
                 .withMethod("GET")
@@ -52,11 +65,15 @@ class ActivityClientTest {
                     new Header("x-ratelimit-limit", "100,1000")
                 )
                 .withContentType(APPLICATION_JSON)
-                .withBody(getFileContent("summaryActivities.json"))
+                .withBody(responseBody)
         );
 
-    Collection<SummaryActivity> activities = activityClient.getSummaryActivitiesSince(
+    Collection<CustomSummaryActivity> result = activityClient.getSummaryActivitiesSince(
         Instant.parse("2022-02-13T00:00:00Z")).activities();
+
+    List<SummaryActivity> activities = result.stream().map(CustomSummaryActivity::getObject).toList();
+
+    assertThat(result.stream().map(CustomSummaryActivity::getPayload)).allMatch(responseBody::contains);
 
     assertThat(activities.stream().map(SummaryActivity::getId))
         .containsExactlyInAnyOrder(6465654440L, 6497819499L, 6516576106L, 6553064943L, 6570536821L, 6580524741L,
@@ -84,14 +101,16 @@ class ActivityClientTest {
                 .withBody("[]")
         );
 
-    Collection<SummaryActivity> activities = activityClient.getSummaryActivitiesSince(
+    Collection<CustomSummaryActivity> result = activityClient.getSummaryActivitiesSince(
         Instant.parse("2022-02-13T00:00:00Z")).activities();
 
-    assertThat(activities).isEmpty();
+    assertThat(result).isEmpty();
   }
 
   @Test
   void getDetailedActivity() {
+    String responseBody = getFileContent("activity.json");
+
     client.when(
             request()
                 .withMethod("GET")
@@ -105,19 +124,23 @@ class ActivityClientTest {
                     new Header("x-ratelimit-limit", "100,1000")
                 )
                 .withContentType(APPLICATION_JSON)
-                .withBody(getFileContent("activity.json"))
+                .withBody(responseBody)
         );
 
-    DetailedActivity detailedActivity = activityClient.getDetailedActivity(7454700738L);
+    CustomDetailedActivity result = activityClient.getDetailedActivity(7454700738L);
 
+
+    assertThat(result.getPayload()).isEqualToNormalizingWhitespace(responseBody.lines().collect(joining("")));
+
+    DetailedActivity detailedActivity = result.getObject();
     assertThat(detailedActivity.getId()).isEqualTo(7454700738L);
   }
 
   @Test
   @DisplayName("test that we are able to avoid error while deserializing Hiking Activity Type ")
-//FIXME
-    // trick :  add  @JsonDeserialize(using = ActivityTypeCustomDeserializer.class) on SummarySegment.ActivityTypeEnum
-  void getDetailedActivity_hikeErrror() {
+  void getDetailedActivity_hikeError() {
+    String responseBody = getFileContent("activity-hike.json");
+
     client.when(
             request()
                 .withMethod("GET")
@@ -132,14 +155,19 @@ class ActivityClientTest {
                     new Header("x-ratelimit-limit", "100,1000")
                 )
                 .withContentType(APPLICATION_JSON)
-                .withBody(getFileContent("activity-hike.json"))
+                .withBody(responseBody)
         );
 
-    DetailedActivity detailedActivity = activityClient.getDetailedActivity(4120884444L);
+    CustomDetailedActivity result = activityClient.getDetailedActivity(4120884444L);
+    DetailedActivity detailedActivity = result.getObject();
+
+    assertThat(result.getPayload()).isEqualToNormalizingWhitespace(responseBody);
 
     assertThat(detailedActivity.getId()).isEqualTo(4120884444L);
 
     DetailedSegmentEffort segmentEffort = detailedActivity.getSegmentEfforts().getFirst();
     assertThat(segmentEffort.getSegment().getActivityType()).isNull();
   }
+
+
 }

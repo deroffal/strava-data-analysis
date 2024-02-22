@@ -25,6 +25,9 @@ import org.springframework.validation.annotation.Validated;
 @EnableMongoRepositories
 public class MongoConfiguration extends AbstractMongoClientConfiguration {
 
+  public static final String SUMMARY_ACTIVITY_COLLECTION = "strava_summary_activity";
+  public static final String DETAILED_ACTIVITY_COLLECTION = "strava_detailed_activity";
+
   @NotBlank
   private String database;
 

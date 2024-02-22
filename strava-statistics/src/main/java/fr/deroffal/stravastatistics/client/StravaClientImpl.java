@@ -4,6 +4,7 @@ import static java.lang.Math.min;
 
 import fr.deroffal.stravastatistics.app.ActivityWithSummary;
 import fr.deroffal.stravastatistics.app.StravaClient;
+import fr.deroffal.stravastatistics.model.CustomSummaryActivity;
 import fr.deroffal.stravastatistics.model.DetailedActivity;
 import java.time.Instant;
 import java.util.List;
@@ -35,11 +36,11 @@ class StravaClientImpl implements StravaClient {
     LOGGER.info("remainingCalls allow : {}", remainingCalls);
 
     return summaryActivitiesSince.stream()
+        .limit(remainingCalls)
         .map(summaryActivity -> {
           LOGGER.info("Processing activity {}", summaryActivity.getId());
-          DetailedActivity detailedActivity = activityClient.getDetailedActivity(summaryActivity.getId());
+          var detailedActivity = activityClient.getDetailedActivity(summaryActivity.getId());
           return new ActivityWithSummary(summaryActivity, detailedActivity);
-
         })
         .toList();
   }

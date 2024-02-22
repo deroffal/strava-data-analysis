@@ -7,5 +7,5 @@ public interface StatisticsRepository {
 
   Optional<Instant> getLastRecordedActivityDate();
 
-  ActivityWithSummary saveActivityWithSummary(ActivityWithSummary activityWithSummary);
+  void saveActivityWithSummary(ActivityWithSummary activityWithSummary);
 }
