@@ -6,4 +6,7 @@ import fr.deroffal.stravastatistics.model.DetailedActivity;
 import fr.deroffal.stravastatistics.model.SummaryActivity;
 
 public record ActivityWithSummary(CustomSummaryActivity summaryActivity, CustomDetailedActivity detailedActivity){
+  public boolean hasDetail(){
+    return detailedActivity != null;
+  }
 }

@@ -6,19 +6,18 @@ import static java.util.stream.Collectors.joining;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.deroffal.stravastatistics.client.rate.RateAdapter;
+import fr.deroffal.stravastatistics.client.rate.RateExceededException;
 import fr.deroffal.stravastatistics.model.CustomDetailedActivity;
 import fr.deroffal.stravastatistics.model.CustomSummaryActivity;
 import fr.deroffal.stravastatistics.model.DetailedActivity;
 import fr.deroffal.stravastatistics.model.SummaryActivity;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +30,8 @@ import org.springframework.web.client.RestClient.RequestHeadersSpec.ConvertibleC
 class ActivityClient {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ActivityClient.class);
+
+  private static final int RATE_EXCEEDED_STATUS_CODE = 429;
 
   private final RestClient restClient;
   private final StravaApiConfiguration stravaApiConfiguration;
@@ -51,6 +52,8 @@ class ActivityClient {
         .exchange((request, response) -> {
           if (response.getStatusCode().is2xxSuccessful()) {
             return toFetchActivitiesResponse(response);
+          } else if (response.getStatusCode().value() == 429) {
+            throw new RateExceededException(response.bodyTo(String.class));
           }
           throw new RuntimeException("Error %s while fetching athlete activities ! Body is %s".formatted(
               response.getStatusCode(),
@@ -92,6 +95,8 @@ class ActivityClient {
             DetailedActivity detailedActivity = response.bodyTo(DetailedActivity.class);
             String json = new BufferedReader(new InputStreamReader(response.getBody())).lines().collect(joining(""));
             return new CustomDetailedActivity(detailedActivity, json);
+          } else if (response.getStatusCode().value() == RATE_EXCEEDED_STATUS_CODE) {
+            throw new RateExceededException(response.bodyTo(String.class));
           }
           throw new RuntimeException("Error %s while fetching activity %s ! Body is %s".formatted(
               response.getStatusCode(),

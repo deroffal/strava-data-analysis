@@ -27,6 +27,8 @@ public class MongoConfiguration extends AbstractMongoClientConfiguration {
 
   public static final String SUMMARY_ACTIVITY_COLLECTION = "strava_summary_activity";
   public static final String DETAILED_ACTIVITY_COLLECTION = "strava_detailed_activity";
+  public static final String SUMMARY_ACTIVITY_JAVA_COLLECTION = "strava_summary_activity_java";
+  public static final String DETAILED_ACTIVITY_JAVA_COLLECTION = "strava_detailed_activity_java";
 
   @NotBlank
   private String database;
