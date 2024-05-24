@@ -11,4 +11,3 @@ link:data/README.adoc[Data section] : Results from Strava API (stored in file to
 == Export
 
 link:strava-statistics/README.adoc[Export Section] : Export Strava data from the API
-

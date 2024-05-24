@@ -4,32 +4,24 @@ import static fr.deroffal.stravastatistics.Utils.getFileContent;
 import static fr.deroffal.stravastatistics.client.AccessTokenProvider.PROFILE_MOCK_TOKEN_PROVIDER;
 import static java.util.stream.Collectors.joining;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 import static org.mockserver.model.MediaType.APPLICATION_JSON;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.deroffal.stravastatistics.model.CustomDetailedActivity;
 import fr.deroffal.stravastatistics.model.CustomSummaryActivity;
 import fr.deroffal.stravastatistics.model.DetailedActivity;
 import fr.deroffal.stravastatistics.model.DetailedSegmentEffort;
 import fr.deroffal.stravastatistics.model.SummaryActivity;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.model.Header;
 import org.mockserver.springtest.MockServerTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -41,8 +33,6 @@ class ActivityClientTest {
   @Autowired
   private ActivityClient activityClient;
 
-  @Value("${strava-statistics.client.api.url}")
-  private String mockServerUrl;
   private MockServerClient client;
 
   @Test
@@ -128,7 +118,6 @@ class ActivityClientTest {
         );
 
     CustomDetailedActivity result = activityClient.getDetailedActivity(7454700738L);
-
 
     assertThat(result.getPayload()).isEqualToNormalizingWhitespace(responseBody.lines().collect(joining("")));
 

@@ -16,7 +16,6 @@ import org.mockserver.client.MockServerClient;
 import org.mockserver.model.Header;
 import org.mockserver.springtest.MockServerTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -28,13 +27,11 @@ class AthleteClientTest {
   @Autowired
   private AthleteClient athleteClient;
 
-  @Value("${strava-statistics.client.api.url}")
-  private String mockServerUrl;
   private MockServerClient client;
 
 
   @Test
-  void getDetailedAthlete(){
+  void getDetailedAthlete() {
     client.when(
             request()
                 .withMethod("GET")
@@ -56,11 +53,12 @@ class AthleteClientTest {
 
     assertThat(athlete.getId()).isEqualTo(42223740L);
     assertThat(athlete.getClubs()).hasSize(2);
-    assertThat(athlete.getShoes().stream().map(SummaryGear::getName)).containsExactlyInAnyOrder("New Balance 840", "Kiprun KS900");
+    assertThat(athlete.getShoes().stream().map(SummaryGear::getName)).containsExactlyInAnyOrder("New Balance 840",
+        "Kiprun KS900");
   }
 
   @Test
-  void getZones(){
+  void getZones() {
     client.when(
             request()
                 .withMethod("GET")
@@ -85,7 +83,7 @@ class AthleteClientTest {
   }
 
   @Test
-  void getAthleteStats(){
+  void getAthleteStats() {
     client.when(
             request()
                 .withMethod("GET")

@@ -2,7 +2,8 @@ package fr.deroffal.stravastatistics.client.auth;
 
 import static fr.deroffal.stravastatistics.client.AccessTokenProvider.PROFILE_API_TOKEN_PROVIDER;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import fr.deroffal.stravastatistics.client.AccessTokenProvider;
 import fr.deroffal.stravastatistics.client.StravaApiConfiguration;
 import fr.deroffal.stravastatistics.client.StravaApiConfiguration.ApiConfig;
@@ -41,12 +42,13 @@ class StravaAuthApi implements AccessTokenProvider {
         .accessToken();
   }
 
+  @JsonNaming(SnakeCaseStrategy.class)
   private record OAuthToken(
-      @JsonProperty("token_type") String tokenType,
-      @JsonProperty("access_token") String accessToken,
-      @JsonProperty("expires_at") int expiresAt,
-      @JsonProperty("expires_in") int expiresIn,
-      @JsonProperty("refresh_token") String refreshToken
+      String tokenType,
+      String accessToken,
+      int expiresAt,
+      int expiresIn,
+      String refreshToken
   ) {
   }
 

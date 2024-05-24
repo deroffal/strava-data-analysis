@@ -9,7 +9,7 @@ import static org.mockserver.model.MediaType.APPLICATION_JSON;
 import fr.deroffal.stravastatistics.client.StravaApiConfiguration;
 import fr.deroffal.stravastatistics.client.StravaApiConfiguration.ApiConfig;
 import java.net.MalformedURLException;
-import java.net.URI;
+import java.net.URL;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,13 +32,13 @@ class StravaAuthApiTest {
   private StravaApiConfiguration stravaApiConfiguration;
 
   @Value("${strava-statistics.client.api.url}")
-  private String mockServerUrl;
+  private URL mockServerUrl;
   private MockServerClient client;
 
   @BeforeEach
   void setup() throws MalformedURLException {
     var apiConfig = new ApiConfig();
-    apiConfig.setUrl(URI.create(mockServerUrl).toURL());
+    apiConfig.setUrl(mockServerUrl);
     apiConfig.setClientId("12345");
     apiConfig.setClientSecret("8cf3ae6da95dda35632abc4ce34ade9fa78de0e");
     apiConfig.setRefreshToken("3a09c939a88b7a88a26a7d05d6b44437f9eb2c0");
