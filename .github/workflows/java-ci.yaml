@@ -1,3 +1,6 @@
+---
+name: Build Java application
+
 on:
   push:
     branches:
