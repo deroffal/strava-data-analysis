@@ -17,3 +17,5 @@ jobs:
     uses: deroffal/github-actions/.github/workflows/ci-maven.yml@main
     with:
       working-directory: ./strava-statistics
+      java-version: 21
+      java-distribution: 'termurin'
