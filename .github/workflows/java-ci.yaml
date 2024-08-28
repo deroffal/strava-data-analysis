@@ -18,4 +18,4 @@ jobs:
     with:
       working-directory: ./strava-statistics
       java-version: 21
-      java-distribution: 'termurin'
+      java-distribution: 'temurin'
