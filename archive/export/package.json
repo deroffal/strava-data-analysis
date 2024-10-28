@@ -16,6 +16,6 @@
     "mongodb": "4.17",
     "mongoose": "^7.5.2",
     "node-fetch": "^3.3.2",
-    "swagger-client": "^3.18.5"
+    "swagger-client": "^3.29.4"
   }
 }
