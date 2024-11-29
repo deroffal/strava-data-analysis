@@ -15,5 +15,4 @@ services:
 
 volumes:
   volume-strava-db:
-
-
+    external: true
